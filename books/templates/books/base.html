@@ -1,0 +1,23 @@
+{% load static %}
+<html>
+    <head>
+        {% block title %}<title>Page</title>{% endblock %}
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    </head>
+    <!-- Side navigation -->
+    <body>
+    <div class="sidenav">
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
+        </div>
+    
+        <!-- Page content -->
+        <div class="main">
+            <h1>Бібліотека факультету КНК</h1>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

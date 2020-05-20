@@ -1,0 +1,13 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+    {% for book in books %}
+    <div>
+        <p>Назва: {{ book.title }}</p>
+        <p>Автори: {% for author in book.authors.all %}{{ author }}, {% endfor %}</p>
+        <p>Видавництво: {{ book.publisher }}</p>
+        <p>ISBN: {{ book.isbn }}</p>
+        <p>----------------------</p>
+    </div>
+    {% endfor %}
+{% endblock %}
