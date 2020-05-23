@@ -1,13 +1,47 @@
 {% extends 'books/base.html' %}
 
 {% block content %}
-    {% for book in books %}
-    <div>
-        <p>Назва: {{ book.title }}</p>
-        <p>Автори: {% for author in book.authors.all %}{{ author }}, {% endfor %}</p>
-        <p>Видавництво: {{ book.publisher }}</p>
-        <p>ISBN: {{ book.isbn }}</p>
-        <p>----------------------</p>
-    </div>
-    {% endfor %}
+    <h2>Пошук</h2>
+
+    <form method="get" action=".">
+        <table>
+            {{ form.q }}
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" value="Search">
+                </td>
+            </tr>
+        </table>
+
+        {% if query %}
+            <h3>Результат</h3>
+
+            {% for result in page.object_list %}
+                <p>
+                    <p>{{ result.object.title }}</p>
+                </p>
+            {% empty %}
+                <p>За вашим запитом нічого не знайдено.</p>
+            {% endfor %}
+
+            {% if page.has_previous or page.has_next %}
+                <div>
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            {% for book in books %}
+            <div>
+                <p>Назва: {{ book.title }}</p>
+                <p>Автори: {% for author in book.authors.all %}{{ author }}, {% endfor %}</p>
+                <p>Видавництво: {{ book.publisher }}</p>
+                <p>ISBN: {{ book.isbn }}</p>
+                <p>----------------------</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </form>
 {% endblock %}
