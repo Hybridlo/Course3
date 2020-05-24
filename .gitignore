@@ -5,3 +5,4 @@ __pycache__
 /static
 .DS_Store
 .vscode/
+elasticsearch-2.4.2/

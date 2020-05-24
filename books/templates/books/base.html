@@ -2,15 +2,17 @@
 <html>
     <head>
         {% block title %}<title>Page</title>{% endblock %}
-        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'books/base.css' %}">
     </head>
     <!-- Side navigation -->
     <body>
     <div class="sidenav">
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
+            {% if curr_user == None %}
+            <button onclick="location.href='{% url 'login' %}';" href="">Вхід</button>
+            {% else %}
+            Вітаю, <a href="{% url 'user' id=curr_user.pk %}">{{ curr_user.first_name }}</a>!<br>
+            <button onclick="location.href='{% url 'logout' %}';" href="">Вийти</button>
+            {% endif %}
         </div>
     
         <!-- Page content -->

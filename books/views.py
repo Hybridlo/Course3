@@ -8,5 +8,4 @@ def index(request):
         return SearchView(template="books/index.html")(request)
 
     rand_books = Book.objects.all().order_by("?")[:5]
-    print(rand_books[0].authors.all())
     return render(request, 'books/index.html', {'books': rand_books, 'query': None, 'form': SearchForm()})

@@ -1,0 +1,9 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+Ім'я: {{ user.get_full_name }}<br>
+Пошта: {{ user.email }}<br>
+Додаткова пошта: {{ user.info.email2 }}<br>
+
+{% endblock %}
