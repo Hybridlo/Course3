@@ -2,8 +2,70 @@
 
 {% block content %}
 
-Ім'я: {{ user.get_full_name }}<br>
+<h3>{{ user.get_full_name }}</h3>
+
 Пошта: {{ user.email }}<br>
 Додаткова пошта: {{ user.info.email2 }}<br>
+
+{% if curr_user.info.is_staff %}
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+            <small style="display: none">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <h4>Резервації користувача</h4>
+
+    <div id="" style="overflow:auto; height:100px;">
+        {% if user.info.books_reserved.exists %}
+            {% for reservation in user.info.books_reserved.all %}
+                <a href="{% url 'book' id=reservation.book.pk %}">{{ reservation.book }}</a> {{ reservation.time }}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
+                    <button type="submit">Видано</button>
+                </form>
+            {% endfor %}
+        {% else %}
+            Зарезервованих книжок не знайдено
+        {% endif %}
+    </div>
+
+    <h4>Взяті книжки користувача</h4>
+
+    <div id="" style="overflow:auto; height:100px;">
+        {% if user.info.books_taken.exists %}
+            {% for taking in user.info.books_taken.all %}
+                <a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a> {{ taking.time }}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="taken_id" value="{{ taking.pk }}">
+                    <button type="submit">Отримано</button>
+                </form>
+            {% endfor %}
+        {% else %}
+            Взятих книжок не знайдено
+        {% endif %}
+    </div>
+
+    {% if success != None %}
+        {% if success == True %}
+            Збережено
+        {% else %}
+            При зміні сталась помилка
+        {% endif %}
+    {% endif %}
+{% endif %}
 
 {% endblock %}

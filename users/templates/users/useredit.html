@@ -1,8 +1,10 @@
-{% extends 'books/base.html' %}
+{% extends "books/base.html" %}
 
 {% block content %}
-  <h2>Реєстрація</h2>
-  <form method="post">
+
+Пошта: {{ user.email }}
+
+<form method="post">
     {% csrf_token %}
       {% for field in form %}
       <p>
@@ -16,6 +18,15 @@
         {% endfor %}
       </p>
       {% endfor %}
-    <button type="submit">Sign up</button>
-  </form>
+    <button type="submit">Змінити</button>
+</form>
+
+{% if success != None %}
+    {% if success == True %}
+        Зміни прийняті успішно
+    {% else %}
+        При зміні сталась помилка
+    {% endif %}
+{% endif %}
+
 {% endblock %}

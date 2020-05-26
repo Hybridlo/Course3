@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, UserSettings, UserAddInfo
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from .models import UserInfo
 from django.core.mail import EmailMessage
 from datetime import date
+from books.models import Reservation, Taking
 
 def signup(request):
     if request.method == 'POST':
@@ -90,4 +91,73 @@ def logout_view(request):
 
 def user_view(request, id):
     user = User.objects.get(pk=id)
+
+    if user == request.user:            #users' own account info
+        if request.method == 'POST':
+            success = False
+            form = UserSettings(request.POST)
+            if form.is_valid():
+                check_user = authenticate(username=user.username, password=form.cleaned_data['curr_password'])
+                if check_user != None and check_user == user:
+                    user.first_name = form.cleaned_data['first_name']
+                    user.last_name = form.cleaned_data['last_name']
+                    user.info.email2 = form.cleaned_data['email2']
+                    if form.cleaned_data['password2']:
+                        user.set_password(form.cleaned_data['password2'])
+                    success = True
+
+                    user.save()
+            
+                form = UserSettings(initial={
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email2': user.info.email2
+                })
+            return render(request, 'users/useredit.html', {'form' : form, 'user': user, 'success': success})
+
+        form = UserSettings(initial={
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email2': user.info.email2
+        })
+        return render(request, 'users/useredit.html', {'form': form, 'user': user})
+
+    if request.user.is_authenticated and request.user.info.is_staff:      #for library staff
+        if request.method == 'POST':
+            success = False
+
+            reserv_id = request.POST.get('reserv_id', None)
+            taken_id = request.POST.get('taken_id', None)
+            form = UserAddInfo(initial={
+                'info': user.info.misc_info
+            })
+            if reserv_id != None:
+                reservation = Reservation.objects.get(pk=reserv_id)
+                taking = Taking()
+                taking.taken_by = reservation.reserved_by
+                taking.book = reservation.book
+                taking.save()
+                reservation.delete()
+                success = True
+            
+            elif taken_id != None:
+                taking = Taking.objects.get(pk=taken_id)
+                taking.book.copies_available += 1
+                taking.book.save()
+                taking.delete()
+                success = True
+
+            else:
+                form = UserAddInfo(request.POST)
+                if form.is_valid():
+                    user.info.misc_info = form.cleaned_data['info']
+                    user.info.save()
+                    success = True
+            return render(request, 'users/user.html', {'form': form, 'user': user, 'success': success})
+        else:
+            form = UserAddInfo(initial={
+                'info': user.info.misc_info
+            })
+            return render(request, 'users/user.html', {'form': form, 'user': user})
+
     return render(request, 'users/user.html', {'user': user})

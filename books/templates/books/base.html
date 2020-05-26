@@ -8,9 +8,12 @@
     <body>
     <div class="sidenav">
             {% if curr_user == None %}
-            <button onclick="location.href='{% url 'login' %}';" href="">Вхід</button>
+            <button onclick="location.href='{% url 'login' %}';" href="">Вхід</button><br>
+            <button onclick="location.href='{% url 'signup' %}';" href="">Реєстрація</button>
             {% else %}
             Вітаю, <a href="{% url 'user' id=curr_user.pk %}">{{ curr_user.first_name }}</a>!<br>
+            <button onclick="location.href='{% url 'reservations' %}';" href="">Резервації</button><br>
+            <button onclick="location.href='{% url 'takings' %}';" href="">Взяті книжки</button><br>
             <button onclick="location.href='{% url 'logout' %}';" href="">Вийти</button>
             {% endif %}
         </div>

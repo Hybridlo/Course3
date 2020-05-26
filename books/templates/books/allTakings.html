@@ -1,0 +1,30 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<h3>Всі взяті книжки</h3>
+
+<div id="" style="overflow:auto; height:100px;">
+    {% if takings.exists %}
+        {% for taking in takings %}
+            Книжка <a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a>
+            взята користувачем <a href="{% url 'user' id=taking.taken_by.user.pk %}">{{ taking.taken_by }}</a>
+            {{ taking.time }}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="taken_id" value="{{ taking.pk }}">
+                <button type="submit">Отримано</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        Взятих книжок не знайдено
+    {% endif %}
+</div>
+
+{% if success != None %}
+    {% if success == True %}
+        Успішно
+    {% endif %}
+{% endif %}
+
+{% endblock %}

@@ -1,3 +1,3 @@
 {{ object.title }}
-{% for author in object.authors.all %}{{ author }} {% endfor %}
+{{ object.authors }}
 {{ object.publisher }}

@@ -1,0 +1,28 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<h3>Зарезервовані Вами книжки</h3>
+
+<div id="" style="overflow:auto; height:100px;">
+    {% if reservations.exists %}
+        {% for reservation in reservations %}
+            <a href="{% url 'book' id=reservation.book.pk %}">{{ reservation.book }}</a> {{ reservation.time }}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
+                <button type="submit">Відмінити резервацію</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        Зарезервованих книжок не знайдено
+    {% endif %}
+</div>
+
+{% if success != None %}
+    {% if success == True %}
+        Успішно
+    {% endif %}
+{% endif %}
+
+{% endblock %}

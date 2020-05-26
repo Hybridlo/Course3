@@ -1,0 +1,65 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+      {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="display: none">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+      {% endfor %}
+    <button type="submit">Змінити</button>
+</form>
+
+<h4>Резервації цієї книжки</h4>
+
+<div id="" style="overflow:auto; height:100px;">
+    {% if book.reservations.exists %}
+        {% for reservation in book.reservations.all %}
+            Зарезервована користувачем <a href="{% url 'user' id=reservation.reserved_by.user.pk %}">{{ reservation.reserved_by }}</a> {{ reservation.time }}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
+                <button type="submit">Видано</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        Резервацій не знайдено
+    {% endif %}
+</div>
+
+<h4>Книжка взята</h4>
+
+<div id="" style="overflow:auto; height:100px;">
+    {% if book.takings.exists %}
+        {% for taking in book.takings.all %}
+            Взята користувачем <a href="{% url 'user' id=taking.taken_by.user.pk %}">{{ taking.taken_by }}</a>
+            {{ taking.time }}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="taken_id" value="{{ taking.pk }}">
+                <button type="submit">Отримано</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        Книжка ні ким не взята
+    {% endif %}
+</div>
+
+{% if success != None %}
+    {% if success == True %}
+        Зміни прийняті успішно
+    {% else %}
+        При зміні сталась помилка
+    {% endif %}
+{% endif %}
+
+{% endblock %}

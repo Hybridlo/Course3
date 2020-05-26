@@ -1,0 +1,29 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<h3>{{ book.title }}</h3>
+
+<p>Автори: {{ book.authors }}</p>
+<p>Видавництво: {{ book.publisher }}</p>
+<p>ISBN: {{ book.isbn }}</p>
+<p>Ключові слова: {{ book.tags }}</p>
+<p>Опис: {{ book.description }}</p>
+<p>Доступно екземплярів: {{ book.copies_available }}</p>
+
+{% if is_auth %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Зробити резервацію</button>
+    </form>
+
+    {% if success != None %}
+        {% if success == True %}
+            Успішно
+        {% else %}
+            Ви досягли ліміту або резервація не доступна
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+{% endblock %}

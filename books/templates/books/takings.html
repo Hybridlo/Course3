@@ -1,0 +1,23 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<h3>Взяті Вами книжки</h3>
+
+<div id="" style="overflow:auto; height:100px;">
+    {% if takings.exists %}
+        {% for taking in takings %}
+            <a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a> {{ taking.time }}
+        {% endfor %}
+    {% else %}
+        Взятих книжок не знайдено
+    {% endif %}
+</div>
+
+{% if success != None %}
+    {% if success == True %}
+        Успішно
+    {% endif %}
+{% endif %}
+
+{% endblock %}

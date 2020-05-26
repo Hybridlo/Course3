@@ -19,7 +19,10 @@
 
             {% for result in page.object_list %}
                 <p>
-                    <p>{{ result.object.title }}</p>
+                    <p>Назва: <a href="{% url 'book' id=result.object.pk %}">{{ result.object.title }}</a></p>
+                    <p>Автори: {{ result.object.authors }}</p>
+                    <p>Видавництво: {{ result.object.publisher }}</p>
+                    <p>----------------------</p>
                 </p>
             {% empty %}
                 <p>За вашим запитом нічого не знайдено.</p>
@@ -35,10 +38,9 @@
         {% else %}
             {% for book in books %}
             <div>
-                <p>Назва: {{ book.title }}</p>
-                <p>Автори: {% for author in book.authors.all %}{{ author }}, {% endfor %}</p>
+                <p>Назва: <a href="{% url 'book' id=book.pk %}">{{ book.title }}</a></p>
+                <p>Автори: {{ book.authors }}</p>
                 <p>Видавництво: {{ book.publisher }}</p>
-                <p>ISBN: {{ book.isbn }}</p>
                 <p>----------------------</p>
             </div>
             {% endfor %}
