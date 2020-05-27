@@ -143,3 +143,19 @@ def takings(request):
         takings = Taking.objects.all()
         
         return render(request, 'books/allTakings.html', {'takings' : takings, 'success': success})
+
+def new_book(request):
+    if not request.user.is_authenticated or not request.user.info.is_staff:
+        return redirect('index')
+
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            book = form.save()
+
+            return redirect('book', id=book.pk)
+
+    else:
+        form = BookForm()
+        
+    return render(request, 'books/new_book.html', {'form': form})

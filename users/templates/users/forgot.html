@@ -1,0 +1,32 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<h3>Відновлення пароля</h3>
+
+<form method="post">
+    {% csrf_token %}
+      {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="display: none">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+      {% endfor %}
+    <button type="submit">Відправити</button>
+</form>
+
+{% if success != None %}
+    {% if success == True %}
+        Лист надіслано на вказану пошту
+    {% else %}
+        Пошта не знайдена
+    {% endif %}
+{% endif %}
+
+{% endblock %}

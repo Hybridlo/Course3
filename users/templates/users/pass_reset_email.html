@@ -1,0 +1,5 @@
+{% autoescape off %}
+Вітаю, {{ user.get_full_name }},
+Для відновлення пароля, будь ласка, натисніть на посилання:
+http://{{ domain }}{% url 'pass_reset' uidb64=uid token=token %}
+{% endautoescape %}

@@ -1,29 +1,17 @@
-{% extends "books/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
 <h3>{{ user.get_full_name }}</h3>
 
 Пошта: {{ user.email }}<br>
-Додаткова пошта: {{ user.info.email2 }}<br>
+Додаткова пошта: {% if user.info.hide_email2 %} Приховано {% else %} {{ user.info.email2 }} {% endif %}<br>
 
 {% if curr_user.info.is_staff %}
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <p>
-            {{ field.label_tag }}<br>
-            {{ field }}
-            {% if field.help_text %}
-            <small style="display: none">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-            {% endfor %}
-        </p>
-        {% endfor %}
-        <button type="submit">Зберегти</button>
-    </form>
+    {% include 'form.html' %}
+
+    При ручній активації акаунта користувач має до кінця дня пройти процедуру підтвердження пошти, інакше акаунт знову буде деактивований<br>
+    Деактивувати акаунт користувача не можливо
 
     <h4>Резервації користувача</h4>
 

@@ -1,0 +1,37 @@
+{% load static %}
+<html>
+    <head>
+        {% block title %}<title>Page</title>{% endblock %}
+        <link rel="stylesheet" href="{% static 'books/base.css' %}">
+    </head>
+    <!-- Side navigation -->
+    <body>
+        <div class="sidenav">
+            {% if curr_user == None %}
+                <button onclick="location.href='{% url 'login' %}';">Вхід</button><br>
+                <button onclick="location.href='{% url 'signup' %}';">Реєстрація</button>
+                <a href="{% url 'forgot'  %}">Забули пароль?</a>
+            {% else %}
+                Вітаю, <a href="{% url 'user' id=curr_user.pk %}">{{ curr_user.first_name }}</a>!<br>
+                <button onclick="location.href='{% url 'reservations' %}';">Резервації</button><br>
+                <button onclick="location.href='{% url 'takings' %}';">Взяті книжки</button><br>
+                {% if curr_user.info.is_staff %}
+                    <button onclick="location.href='{% url 'create_staff_token' %}';">Створити токен</button><br>
+                    <button onclick="location.href='{% url 'new_book' %}';">Додати книжку</button><br>
+                {% endif %}
+                <button onclick="location.href='{% url 'logout' %}';">Вийти</button>
+            {% endif %}
+        </div>
+
+        {% if warning %}
+            <a href="{% url 'reactivation' %}">{{ warning }}</a>
+        {% endif %}
+    
+        <!-- Page content -->
+        <div class="main">
+            <h1><a href="/">Бібліотека факультету КНК</a></h1>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
