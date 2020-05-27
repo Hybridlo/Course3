@@ -139,6 +139,8 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
 MAX_ALLOWED_RESERVTIONS = 5
 
 MAX_ALLOWED_TAKEN = 10
