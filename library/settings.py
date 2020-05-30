@@ -139,6 +139,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+MEDIA_ROOT = '/digital_book/'
+
+MEDIA_URL = '/digital_book/'
+
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 MAX_ALLOWED_RESERVTIONS = 5

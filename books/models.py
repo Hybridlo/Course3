@@ -8,6 +8,7 @@ class Book(models.Model):
     isbn = models.CharField(max_length=20, blank=True)
     tags = models.CharField(max_length=1000, default="", blank=True)
     description = models.TextField(default="", blank=True)
+    digital = models.FileField(blank=True, null=True)
     copies_available = models.IntegerField(default=1)
 
     def __str__(self):

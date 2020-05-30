@@ -4,6 +4,11 @@
 
 {% include 'form.html' %}
 
+{% if book.digital is not null %}
+    <a href="{{ book.digital.url }}">Електронний примірник</a><br>
+{% endif %}
+<a href="{% url 'book_digital' id=book.pk %}">Завантажити/змінити примірник</a>
+
 <h4>Резервації цієї книжки</h4>
 
 <div id="" style="overflow:auto; height:100px;">

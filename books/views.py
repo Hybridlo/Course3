@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Book, Reservation, Taking
 from haystack.views import SearchView
 from haystack.forms import SearchForm
-from .forms import BookForm
+from .forms import BookForm, BookFileForm
 from django.conf import settings
 
 def index(request):
@@ -87,6 +87,27 @@ def book_view(request, id):
             return render(request, 'books/book.html', {'book': book, 'success': success, 'is_auth': request.user.is_authenticated})
 
     return render(request, 'books/book.html', {'book': book, 'is_auth': request.user.is_authenticated})
+
+def book_digital(request, id):
+    if not request.user.is_authenticated or not request.user.info.is_staff:
+        return redirect('index')
+
+    book = Book.objects.get(pk=id)
+
+    success = None
+
+    if request.method == 'POST':
+        success = False
+        form = BookFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            success = True
+            book.digital = form.cleaned_data['digital']
+            print(request.FILES)
+            book.save()
+    else:
+        form = BookFileForm()
+
+    return render(request, 'books/upload_book.html', {'form': form, 'success': success})
 
 def reservations(request):
     if not request.user.is_authenticated:

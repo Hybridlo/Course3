@@ -6,3 +6,4 @@ __pycache__
 .DS_Store
 .vscode/
 elasticsearch-2.4.2/
+digital_books/
