@@ -4,7 +4,7 @@
 
 {% include 'form.html' %}
 
-{% if book.digital is not null %}
+{% if book.digital %}
     <a href="{{ book.digital.url }}">Електронний примірник</a><br>
 {% endif %}
 <a href="{% url 'book_digital' id=book.pk %}">Завантажити/змінити примірник</a>

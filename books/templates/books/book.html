@@ -10,7 +10,7 @@
 <p>Ключові слова: {{ book.tags }}</p>
 <p>Опис: {{ book.description }}</p>
 <p>Доступно екземплярів: {{ book.copies_available }}</p>
-{% if book.digital != None %}
+{% if book.digital %}
     <a href="{{ book.digital.url }}">Електронний примірник</a>
 {% endif %}
 
