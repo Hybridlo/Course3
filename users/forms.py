@@ -40,7 +40,7 @@ class UserSettings(forms.Form):
     curr_password = forms.CharField(max_length=40, label="Пароль (обов'язково):", widget=forms.PasswordInput())
     password1 = forms.CharField(max_length=40, required=False, label="Новий пароль:", widget=forms.PasswordInput())
     password2 = forms.CharField(max_length=40, required=False, label="Підтвердіть пароль:", widget=forms.PasswordInput())
-    hide_email2 = forms.BooleanField(required=False, label="Приховувати додаткову пошту:")
+    hide_email2 = forms.BooleanField(required=False, label="Приховувати додаткову пошту")
     
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3>{{ user.get_full_name }}</h3>
+<h3 class="text-center">{{ user.get_full_name }}</h3>
 
 Пошта: {{ user.email }}<br>
 Додаткова пошта: {% if user.info.hide_email2 %} Приховано {% else %} {{ user.info.email2 }} {% endif %}<br>
@@ -15,37 +15,55 @@
 
     <h4>Резервації користувача</h4>
 
-    <div id="" style="overflow:auto; height:100px;">
-        {% if user.info.books_reserved.exists %}
+    {% if user.info.books_reserved.exists %}
+        <div class="card-deck">
             {% for reservation in user.info.books_reserved.all %}
-                <a href="{% url 'book' id=reservation.book.pk %}">{{ reservation.book }}</a> {{ reservation.time }}
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
-                    <button type="submit">Видано</button>
-                </form>
+                <div class="card" style="min-width: 18rem;">
+                    <div class="card-header text-center"><a href="{% url 'book' id=reservation.book.pk %}">{{ reservation.book }}</a></div>
+                    <div class="card-body text-center">
+                        Зарезервована користувачем<br>
+                        <a href="{% url 'user' id=reservation.reserved_by.user.pk %}">{{ reservation.reserved_by }}</a><br>
+                        {{ reservation.time }}
+                    </div>
+                    <div class="card-footer text-center">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
+                            <button type="submit" class="btn btn-success">Видано</button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
-        {% else %}
-            Зарезервованих книжок не знайдено
-        {% endif %}
-    </div>
+        </div>
+    {% else %}
+        Зарезервованих книжок не знайдено
+    {% endif %}
 
     <h4>Взяті книжки користувача</h4>
 
-    <div id="" style="overflow:auto; height:100px;">
-        {% if user.info.books_taken.exists %}
+    {% if user.info.books_taken.exists %}
+        <div class="card-deck">
             {% for taking in user.info.books_taken.all %}
-                <a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a> {{ taking.time }}
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="taken_id" value="{{ taking.pk }}">
-                    <button type="submit">Отримано</button>
-                </form>
+                <div class="card" style="min-width: 18rem;">
+                    <div class="card-header text-center"><a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a></div>
+                    <div class="card-body text-center">
+                        Взята користувачем<br>
+                        <a href="{% url 'user' id=taking.taken_by.user.pk %}">{{ taking.taken_by }}</a><br>
+                        {{ taking.time }}
+                    </div>
+                    <div class="card-footer text-center">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="taken_id" value="{{ taking.pk }}">
+                            <button type="submit" class="btn btn-success">Отримано</button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
-        {% else %}
-            Взятих книжок не знайдено
-        {% endif %}
-    </div>
+        </div>
+    {% else %}
+        Взятих книжок не знайдено
+    {% endif %}
 
     {% if success != None %}
         {% if success == True %}

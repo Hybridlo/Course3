@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3>{{ book.title }}</h3>
+<h3 class="text-center">{{ book.title }}</h3>
 
 <p>Автори: {{ book.authors }}</p>
 <p>Видавництво: {{ book.publisher }}</p>
@@ -10,14 +10,11 @@
 <p>Ключові слова: {{ book.tags }}</p>
 <p>Опис: {{ book.description }}</p>
 <p>Доступно екземплярів: {{ book.copies_available }}</p>
-{% if book.digital %}
-    <a href="{{ book.digital.url }}">Електронний примірник</a>
-{% endif %}
 
 {% if is_auth %}
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Зробити резервацію</button>
+        <button type="submit" class="btn btn-primary">Зробити резервацію</button>
     </form>
 
     {% if success != None %}
@@ -27,6 +24,10 @@
             Ви досягли ліміту або резервація не доступна
         {% endif %}
     {% endif %}
+{% endif %}
+<br>
+{% if book.digital %}
+    <a href="{{ book.digital.url }}" class="btn btn-info">Електронний примірник</a>
 {% endif %}
 
 {% endblock %}

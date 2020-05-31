@@ -4,15 +4,23 @@
 
 <h3>Взяті Вами книжки</h3>
 
-<div id="" style="overflow:auto; height:100px;">
-    {% if takings.exists %}
-        {% for taking in takings %}
-            <a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a> {{ taking.time }}
-        {% endfor %}
-    {% else %}
-        Взятих книжок не знайдено
-    {% endif %}
-</div>
+
+{% if takings.exists %}
+    <div class="card-deck">
+    {% for taking in takings %}
+        <div class="card" style="min-width: 18rem;">
+            <div class="card-header text-center"><a href="{% url 'book' id=taking.book.pk %}">{{ taking.book }}</a></div>
+            <div class="card-body text-center">
+                Взято<br>
+                {{ taking.time }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    Взятих книжок не знайдено
+{% endif %}
+
 
 {% if success != None %}
     {% if success == True %}

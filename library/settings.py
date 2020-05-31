@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'haystack',
     'books',
     'users',
+    'crispy_forms',
 ]
 
 HAYSTACK_CONNECTIONS = {

@@ -4,20 +4,28 @@
 
 <h3>Зарезервовані Вами книжки</h3>
 
-<div id="" style="overflow:auto; height:100px;">
-    {% if reservations.exists %}
-        {% for reservation in reservations %}
-            <a href="{% url 'book' id=reservation.book.pk %}">{{ reservation.book }}</a> {{ reservation.time }}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
-                <button type="submit">Відмінити резервацію</button>
-            </form>
-        {% endfor %}
-    {% else %}
-        Зарезервованих книжок не знайдено
-    {% endif %}
-</div>
+{% if reservations.exists %}
+    <div class="card-deck">
+    {% for reservation in reservations %}
+        <div class="card" style="min-width: 18rem;">
+            <div class="card-header text-center"><a href="{% url 'book' id=reservation.book.pk %}">{{ reservation.book }}</a></div>
+            <div class="card-body text-center">
+                Резевація відбулася<br>
+                {{ reservation.time }}
+            </div>
+            <div class="card-footer text-center">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="reserv_id" value="{{ reservation.pk }}">
+                    <button type="submit" class="btn btn-dark">Відмінити резервацію</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    Зарезервованих книжок не знайдено
+{% endif %}
 
 {% if success != None %}
     {% if success == True %}

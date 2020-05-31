@@ -1,37 +1,75 @@
 {% load static %}
-<html>
+<!DOCTYPE html>
+<html lang="ua">
     <head>
-        {% block title %}<title>Page</title>{% endblock %}
+        <title>Бібліотека</title>
         <link rel="stylesheet" href="{% static 'books/base.css' %}">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     </head>
-    <!-- Side navigation -->
     <body>
-        <div class="sidenav">
-            {% if curr_user == None %}
-                <button onclick="location.href='{% url 'login' %}';">Вхід</button><br>
-                <button onclick="location.href='{% url 'signup' %}';">Реєстрація</button>
-                <a href="{% url 'forgot'  %}">Забули пароль?</a>
-            {% else %}
-                Вітаю, <a href="{% url 'user' id=curr_user.pk %}">{{ curr_user.first_name }}</a>!<br>
-                <button onclick="location.href='{% url 'reservations' %}';">Резервації</button><br>
-                <button onclick="location.href='{% url 'takings' %}';">Взяті книжки</button><br>
-                {% if curr_user.info.is_staff %}
-                    <button onclick="location.href='{% url 'create_staff_token' %}';">Створити токен</button><br>
-                    <button onclick="location.href='{% url 'new_book' %}';">Додати книжку</button><br>
-                {% endif %}
-                <button onclick="location.href='{% url 'logout' %}';">Вийти</button>
-            {% endif %}
+        <div class="container-fluid">
+            <img src="{% static 'books/logo.png' %}" class="float-left position-absolute">
+            <h1 class="text-center"><a href="/">Електронна бібліотека факультету</a></h1>
         </div>
 
-        {% if warning %}
-            <a href="{% url 'reactivation' %}">{{ warning }}</a>
-        {% endif %}
-    
-        <!-- Page content -->
-        <div class="main">
-            <h1><a href="/">Бібліотека факультету КНК</a></h1>
-            {% block content %}
-            {% endblock %}
+        <img src="{% static 'books/faculty.jpg' %}" class="img-fluid" style="height: 250px; width: 100%; display: block;">
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="container">
+                    <nav class="navbar bg-light justify-content-center" style="text-align: center;">
+                        <ul class="navbar-nav">
+                        {% if curr_user == None %}
+                            <li class="nav-item">
+                                <div class="btn-group-vertical">
+                                    <button class="btn btn-primary" onclick="location.href='{% url 'login' %}';">Вхід</button>
+                                    <button class="btn btn-primary" onclick="location.href='{% url 'signup' %}';">Реєстрація</button>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'forgot'  %}">Забули пароль?</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                Вітаю, <a href="{% url 'user' id=curr_user.pk %}">{{ curr_user.first_name }}</a>!
+                            </li>
+                            <li class="nav-item">
+                                <div class="btn-group-vertical">
+                                    <button class="btn btn-primary" onclick="location.href='{% url 'reservations' %}';">Резервації</button>
+                                    <button class="btn btn-primary" onclick="location.href='{% url 'takings' %}';">Взяті книжки</button>
+                            {% if curr_user.info.is_staff %}
+                                    <button class="btn btn-primary" onclick="location.href='{% url 'create_staff_token' %}';">Створити токен</button>
+                                    <button class="btn btn-primary" onclick="location.href='{% url 'new_book' %}';">Додати книжку</button>
+                                </div>
+                            {% endif %}
+                            </li>
+                            <button class="btn btn-primary" onclick="location.href='{% url 'logout' %}';">Вийти</button>
+                        {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+            {% if warning %}
+                <a href="{% url 'reactivation' %}">{{ warning }}</a>
+            {% endif %}
+            
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>

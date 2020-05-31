@@ -9,7 +9,7 @@ def index(request):
     if (request.GET.get("q", None) != None):
         return SearchView(template="books/index.html")(request)
 
-    rand_books = Book.objects.all().order_by("?")[:5]
+    rand_books = Book.objects.all().order_by("?")[:10]
     return render(request, 'books/index.html', {'books': rand_books, 'form': SearchForm()})
 
 def book_view(request, id):

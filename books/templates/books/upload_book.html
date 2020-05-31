@@ -1,22 +1,15 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-      {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="display: none">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-      {% endfor %}
-    <button type="submit">Ввід</button>
+    <div class="text-center">
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-success" value="Ввід">
+    </div>
 </form>
 
 {% if success != None %}
@@ -27,6 +20,6 @@
     {% endif %}
 {% endif %}
 
-<br><a href="..">Назад</a>
+<br><a class="btn btn-info" href="..">Назад</a>
 
 {% endblock %}
