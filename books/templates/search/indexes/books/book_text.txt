@@ -1,5 +1,5 @@
-{{ object.title }}
+{{ object.title }}{{ object.title }}{{ object.title }}
 {{ object.authors }}
 {{ object.publisher }}
-{{ object.tags }}
+{{ object.tags }}{{ object.tags }}
 {{ object.description }}

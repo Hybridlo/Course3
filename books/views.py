@@ -119,6 +119,8 @@ def reservations(request):
         if request.method == 'POST':
             reserv_id = int(request.POST.get('reserv_id'))
             reservation = Reservation.objects.get(pk=reserv_id)
+            reservation.book.copies_available += 1
+            reservation.book.save()
             reservation.delete()
             success = True
 
