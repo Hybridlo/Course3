@@ -9,6 +9,6 @@ if __name__ == '__main__':
             d['title'] = entry.get('title')
             d['isbn'] = entry.get('isbn', '')
             d['description'] = entry.get('longDescription', '')
-            d['authors'] = str(entry['authors']).strip('[]')
-            d['tags'] = str(entry['categories']).strip('[]')
+            d['authors'] = ', '.join(entry['authors'])
+            d['tags'] = ', '.join(entry['categories'])
             add_book(d)
