@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
+<br>
+<h3 class="text-center text-info">{{ book.title }}</h3>
 
-<h3 class="text-center">{{ book.title }}</h3>
-
-<p>Автори: {{ book.authors }}</p>
-<p>Видавництво: {{ book.publisher }}</p>
-<p>ISBN: {{ book.isbn }}</p>
-<p>Ключові слова: {{ book.tags }}</p>
-<p>Опис: {{ book.description }}</p>
-<p>Доступно екземплярів: {{ book.copies_available }}</p>
+<div class="container">
+    <p class="text-primary">Автори: {{ book.authors }}</p>
+    <p>Видавництво: {{ book.publisher }}</p>
+    <p>ISBN: {{ book.isbn }}</p>
+    <p class="text-success">Ключові слова: {{ book.tags }}</p>
+    <p class="bg-light">Опис: {{ book.description }}</p>
+    <p>Доступно екземплярів: {{ book.copies_available }}</p>
+</div>
 
 {% if is_auth %}
     <form method="post">
